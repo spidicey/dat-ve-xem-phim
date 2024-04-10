@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/navigation-menu";
 import Search from "./search";
 import { DropdownMenu } from "./ui/dropdown-menu";
-import { DropdownMenuDemo } from "./user-dropdown";
+import { Account } from "./user-dropdown";
+import { Button } from "./ui/button";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -119,7 +120,10 @@ export default function Header() {
         </NavigationMenuList>
       </NavigationMenu>
       <Search placeholder="Search" />
-      <DropdownMenuDemo />
+      <Account />
+      <Link href="/login">
+        <Button variant="outline">Login</Button>
+      </Link>
     </nav>
   );
 }
