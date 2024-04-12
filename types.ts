@@ -1,5 +1,5 @@
-import exp from 'constants';
-import z from 'zod';
+import exp from "constants";
+import z from "zod";
 // export type Movie = {
 //     adult: boolean;
 //     backdrop_path: string;
@@ -18,23 +18,27 @@ import z from 'zod';
 //     vote_count: number;
 //     status: string;
 //   };
-  export const Movie = z.object({
-    adult: z.boolean(),
-    backdrop_path: z.string(),
-    id: z.number(),
-    title: z.string(),
-    original_language: z.string(),
-    original_title: z.string(),
-    overview: z.string(),
-    poster_path: z.string(),
-    media_type: z.string(),
-    genres: z.array(z.unknown()),
-    popularity: z.number(),
-    release_date: z.string(),
-    video: z.boolean(),
-    vote_average: z.number(),
-    vote_count: z.number(),
-    status: z.string(),
-  });
+export const Movie = z.object({
+  adult: z.boolean(),
+  backdrop_path: z.string(),
+  id: z.number(),
+  title: z.string(),
+  original_language: z.string(),
+  original_title: z.string(),
+  overview: z.string(),
+  poster_path: z.string(),
+  media_type: z.string(),
+  genres: z.array(z.unknown()),
+  popularity: z.number(),
+  release_date: z.string(),
+  video: z.boolean(),
+  vote_average: z.number(),
+  vote_count: z.number(),
+  status: z.string(),
+});
 
-  export type Movie = z.infer<typeof Movie>;
+export const Showtime = z.object({
+  
+});
+
+export type Movie = z.infer<typeof Movie>;

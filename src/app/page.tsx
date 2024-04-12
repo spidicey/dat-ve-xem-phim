@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Movie } from "../../types";
 import MovieCard from "@/components/card-movie";
 export default async function Page() {
-  const movies: Movie[] = await fetchTrendingMovies(10);
+  const movies: Movie[] = await fetchTrendingMovies(1);
   return (
     <div className="grid grid-cols-4 gap-4 mt-4">
       <Suspense fallback={<div>Loading...</div>}>
