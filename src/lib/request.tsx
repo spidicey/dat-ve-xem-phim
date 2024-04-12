@@ -35,6 +35,7 @@ export default async function fetchMovieDetails(id: number): Promise<Movie> {
       Authorization:
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4",
     },
+    timeout: 5000,
   };
   const res = await axios.get(
     `https://api.themoviedb.org/3/movie/${id}?language=vi-vie`,

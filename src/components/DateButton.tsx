@@ -12,8 +12,8 @@ export default function DateButton() {
     (_, i) => {
       const date = new Date();
       date.setDate(date.getDate() + i);
-      const day = date.getDate();
-      const month = date.getMonth() + 1; // JavaScript months are 0-11
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // JavaScript months are 0-11
       const year = date.getFullYear();
       const weekday = ["CN", "Th 2", "Th 3", "Th 4", "Th 5", "Th 6", "Th 7"][
         date.getDay()

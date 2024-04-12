@@ -38,7 +38,15 @@ export const Movie = z.object({
 });
 
 export const Showtime = z.object({
-  
+  id_cinema: z.number(),
+  cinema_name: z.string(),
+  address: z.string(),
+  id_room: z.number(),
+  sub: z.string(),
+  day: z.string(),
+  schedule_start: z.array(z.string()),
 });
+
+export type Showtime = z.infer<typeof Showtime>;
 
 export type Movie = z.infer<typeof Movie>;
