@@ -19,7 +19,7 @@ const showtimes: Showtime[] = [
     id_room: 1,
     sub: "2D Phụ Đề Việt",
     schedule_start: ["2:45", "3:45", "4:45", "23:45", "1:45", "5:45"],
-    day: "12/04/2024",
+    day: "14/04/2024",
   },
   {
     id_cinema: 2,
@@ -67,66 +67,74 @@ export default function MovieShowtime({ day }: any) {
   );
   return (
     <div>
-      {filteredShowtimes.map((showtime, index) => (
-        <Collapsible
-          key={index}
-          open={isOpen[index]}
-          onOpenChange={() => toggleOpen(index)}
-          className="w-auto space-y-2"
-        >
-          <CollapsibleTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-[500px] flex justify-start items-center space-x-4 px-4"
-            >
-              <ChevronsUpDown className="h-4 w-4" />
-              <h4 className="text-sm font-semibold">
-                Phòng chiếu {showtime.id_room}
+      {filteredShowtimes.length === 0 ? (
+        <div className="rounded-md border px-4 py-3 font-mono text-sm">
+          Không có lịch chiếu phù hợp với điều kiện tìm kiếm của bạn.
+          <br />
+          Hãy thử chọn một ngày khác.
+        </div>
+      ) : (
+        filteredShowtimes.map((showtime, index) => (
+          <Collapsible
+            key={index}
+            open={isOpen[index]}
+            onOpenChange={() => toggleOpen(index)}
+            className="w-auto space-y-2"
+          >
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-[500px] flex justify-start items-center space-x-4 px-4"
+              >
+                <ChevronsUpDown className="h-4 w-4" />
+                <h4 className="text-sm font-semibold">
+                  Phòng chiếu {showtime.id_room}
+                </h4>
+              </Button>
+            </CollapsibleTrigger>
+
+            <CollapsibleContent className="space-y-2">
+              <h4 className="text-body mb-0 name font-weight-normal">
+                {showtime.cinema_name}
               </h4>
-            </Button>
-          </CollapsibleTrigger>
+              <div className="rounded-md border px-4 py-3 font-mono text-sm">
+                {showtime.address} -
+                <br />
+                <label className="small font-bold">{showtime.sub}</label>
+                <div className="font-bold flex flex-wrap mt-2">
+                  {showtime.schedule_start.map((time, index) => {
+                    const currentTime = new Date();
+                    const scheduleTime = new Date();
+                    scheduleTime.setHours(Number(time.split(":")[0]));
+                    scheduleTime.setMinutes(Number(time.split(":")[1]));
 
-          <CollapsibleContent className="space-y-2">
-            <h4 className="text-body mb-0 name font-weight-normal">
-              {showtime.cinema_name}
-            </h4>
-            <div className="rounded-md border px-4 py-3 font-mono text-sm">
-              {showtime.address} -
-              <br />
-              <label className="small font-bold">{showtime.sub}</label>
-              <div className="font-bold flex flex-wrap mt-2">
-                {showtime.schedule_start.map((time, index) => {
-                  const currentTime = new Date();
-                  const scheduleTime = new Date();
-                  scheduleTime.setHours(Number(time.split(":")[0]));
-                  scheduleTime.setMinutes(Number(time.split(":")[1]));
+                    const isPast = currentTime >= scheduleTime;
 
-                  const isPast = currentTime >= scheduleTime;
-
-                  return (
-                    <Link
-                      key={index}
-                      href=""
-                      className={`w-20 h-[54px] space-x-4 ${
-                        isPast ? "pointer-events-none opacity-50" : ""
-                      }`}
-                    >
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-20 h-[54px] space-x-4 px-4"
+                    return (
+                      <Link
+                        key={index}
+                        href="/buy-ticket"
+                        className={`w-20 h-[54px] space-x-4 ${
+                          isPast ? "pointer-events-none opacity-50" : ""
+                        }`}
                       >
-                        {time}
-                      </Button>
-                    </Link>
-                  );
-                })}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-20 h-[54px] space-x-4 px-4"
+                        >
+                          {time}
+                        </Button>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-      ))}
+            </CollapsibleContent>
+          </Collapsible>
+        ))
+      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/main-nav";
 import Providers from "@/lib/query-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header />
         <div>{children}</div>
+        <Toaster />
       </body>
     </html>
   );
