@@ -26,7 +26,10 @@ export const fetchTrendingMovies = async (page: number): Promise<Movie[]> => {
 
   return data?.results as Movie[];
 };
-
+type orderInfo = {
+  amount: number;
+  orderInfo: string;
+};
 export default async function fetchMovieDetails(id: number): Promise<Movie> {
   // console.log("test3 " + process.env.NEXT_PUBLIC_API_KEY);
   const options = {
@@ -59,6 +62,21 @@ export const getSimilarMovies = async (id: number) => {
   return data.results;
 };
 
+export const getVNpayLink = async ({ amount, orderInfo }: orderInfo) => {
+  const options = {
+    params: {
+      amount,
+      orderInfo,
+    },
+    timeout: 5000,
+  };
+  const res = await axios.get(
+    "http://127.0.0.1:8080/api/submitOrder",
+    options
+  );
+  return res.data;
+};
+
 // export const fetchDataJson = async (): Promise<any[]> => {
 //   const options = {
 //     headers: {
@@ -84,13 +102,13 @@ export const getSimilarMovies = async (id: number) => {
 
 //   const movieData = await Promise.all(movieDataPromises);
 
-  // fs.writeFile("res1.json", JSON.stringify(movieData), (err) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return;
-  //   }
-  //   console.log("File has been created");
-  // });
+// fs.writeFile("res1.json", JSON.stringify(movieData), (err) => {
+//   if (err) {
+//     console.error(err);
+//     return;
+//   }
+//   console.log("File has been created");
+// });
 
 //   // console.log(movieData);
 
@@ -100,26 +118,26 @@ export const getSimilarMovies = async (id: number) => {
 //   return ids;
 // };
 
-export const fetchGenres = async (): Promise<any[]> => {
-  const options = {
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4`,
-    },
-  };
+// export const fetchGenres = async (): Promise<any[]> => {
+//   const options = {
+//     headers: {
+//       accept: "application/json",
+//       Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4`,
+//     },
+//   };
 
-  const res = await axios.get(
-    `https://api.themoviedb.org/3/genre/movie/list?language=vi`,
-    options
-  );
+//   const res = await axios.get(
+//     `https://api.themoviedb.org/3/genre/movie/list?language=vi`,
+//     options
+//   );
 
-  const data = res.data;
-  fs.writeFile("genres.json", JSON.stringify(data), (err) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    console.log("File has been created");
-  });
-  return data;
-};
+//   const data = res.data;
+//   fs.writeFile("genres.json", JSON.stringify(data), (err) => {
+//     if (err) {
+//       console.error(err);
+//       return;
+//     }
+//     console.log("File has been created");
+//   });
+//   return data;
+// };

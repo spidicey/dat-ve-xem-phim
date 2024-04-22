@@ -1,5 +1,5 @@
 import React from "react";
-import DateButton from "../../../../components/DateButton";
+import DateButton from "../../../../components/movies/DateButton";
 
 export default function Layout({
   children,

@@ -40,6 +40,7 @@ export const Movie = z.object({
 export const Showtime = z.object({
   id_cinema: z.number(),
   cinema_name: z.string(),
+  film_name: z.string(),
   address: z.string(),
   id_room: z.number(),
   sub: z.string(),

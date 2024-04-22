@@ -1,8 +1,9 @@
 import { usePathname } from "next/navigation";
 import { Movie } from "../../../../types";
-import MovieNav from "@/components/movie-nav";
-import fetchMovieDetails, { fetchGenres } from "@/lib/request";
-import MovieComponent from "@/components/movie";
+import MovieNav from "@/components/movies/movie-nav";
+import fetchMovieDetails from "@/lib/request";
+import MovieComponent from "@/components/movies/movie";
+import Header from "@/components/main-nav";
 export default async function Layout({
   children,
   params,
@@ -16,6 +17,8 @@ export default async function Layout({
   // console.log(pathname);
   const movie = await fetchMovieDetails(params.id);
   return (
+    <>
+    <Header />
     <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
       <div className="flex-grow p-6 md:overflow-y-auto md:p-12 md:px-96 ">
         {/* <div></div> */}
@@ -24,5 +27,6 @@ export default async function Layout({
         {children}
       </div>
     </div>
+    </>
   );
 }

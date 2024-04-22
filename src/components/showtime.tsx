@@ -15,29 +15,32 @@ const showtimes: Showtime[] = [
   {
     id_cinema: 1,
     cinema_name: "DCINE Bến Thành",
+    film_name: "The Batman",
     address: "Số 6, Mạc Đĩnh Chi, Q.1, Tp. Hồ Chí Minh",
     id_room: 1,
     sub: "2D Phụ Đề Việt",
     schedule_start: ["2:45", "3:45", "4:45", "23:45", "1:45", "5:45"],
-    day: "14/04/2024",
+    day: "20/04/2024",
   },
   {
     id_cinema: 2,
     cinema_name: "DCINE Quận 7",
+    film_name: "The Batman 3",
     address: "Số 7, Nguyễn Văn Linh, Q.7, Tp. Hồ Chí Minh",
     id_room: 2,
     sub: "3D Phụ Đề Việt",
     schedule_start: ["1:30", "4:30", "7:30"],
-    day: "13/04/2024",
+    day: "18/04/2024",
   },
   {
     id_cinema: 3,
     cinema_name: "DCINE Thủ Đức",
+    film_name: "The Batman 6",
     address: "Số 8, Võ Văn Ngân, Thủ Đức, Tp. Hồ Chí Minh",
     id_room: 3,
     sub: "2D Phụ Đề Anh",
     schedule_start: ["2:00", "5:00", "8:00"],
-    day: "15/04/2024",
+    day: "19/04/2024",
   },
   // Add more showtimes as needed
 ];
@@ -109,8 +112,15 @@ export default function MovieShowtime({ day }: any) {
                     scheduleTime.setHours(Number(time.split(":")[0]));
                     scheduleTime.setMinutes(Number(time.split(":")[1]));
 
-                    const isPast = currentTime >= scheduleTime;
+                    const isSameDay =
+                      currentTime.getFullYear() ===
+                        scheduleTime.getFullYear() &&
+                      currentTime.getMonth() === scheduleTime.getMonth() &&
+                      currentTime.getDate() === scheduleTime.getDate();
 
+                    const isPast = isSameDay
+                      ? currentTime >= scheduleTime
+                      : currentTime > scheduleTime;
                     return (
                       <Link
                         key={index}
