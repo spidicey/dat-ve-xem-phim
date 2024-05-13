@@ -1,9 +1,7 @@
 "use client";
-
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import logo from "./logo.png";
 // import { Icons } from "@/components/icons"
 import {
@@ -19,6 +17,7 @@ import Search from "./search";
 import { DropdownMenu } from "./ui/dropdown-menu";
 import { Account } from "./user-dropdown";
 import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -61,14 +60,15 @@ const components: { title: string; href: string; description: string }[] = [
 export default function Header() {
   return (
     <nav className="flex justify-center items-center space-x-2 bg-slate-300">
-      <Image
-        src={logo}
-        width={100}
-        height={100}
-        alt="Picture of the author"
-        className="m-2 mr-4"
-      />
-
+      <Link href="/">
+        <Image
+          src={logo}
+          width={100}
+          height={100}
+          alt="Picture of the author"
+          className="m-2 mr-4"
+        />
+      </Link>
       <NavigationMenu className="items-end">
         <NavigationMenuList style={{ display: "flex", listStyle: "none" }}>
           <NavigationMenuItem>
@@ -78,7 +78,7 @@ export default function Header() {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
             <NavigationMenuContent className="right:0 absolute left-auto top-full w-auto">
               <ul className="grid gap-3 p-6 md:w-[100px] lg:w-[200px] lg:grid-cols-1">
@@ -109,7 +109,8 @@ export default function Header() {
                 ))}
               </ul>
             </NavigationMenuContent>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
+
           <NavigationMenuItem>
             <Link href="/docs" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>

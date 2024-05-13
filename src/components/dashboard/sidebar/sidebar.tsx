@@ -4,10 +4,10 @@ import {
   MdDashboard,
   MdSupervisedUserCircle,
   MdShoppingBag,
+  MdOutlineAdminPanelSettings,
   MdAttachMoney,
   MdWork,
-  MdAnalytics,
-  MdPeople,
+  MdMovie,
   MdOutlineSettings,
   MdHelpCenter,
   MdLogout,
@@ -18,20 +18,20 @@ const menuItems = [
   {
     title: "Pages",
     list: [
-      // {
-      //   title: "Dashboard",
-      //   path: "/dashboard",
-      //   icon: <MdDashboard />,
-      // },
       {
-        title: "Users",
-        path: "/dashboard/users",
+        title: "Quản trị viên",
+        path: "/admin/admins",
+        icon: <MdOutlineAdminPanelSettings />,
+      },
+      {
+        title: "Khách hàng",
+        path: "/admin/users",
         icon: <MdSupervisedUserCircle />,
       },
       {
         title: "Phim",
-        path: "/dashboard/products",
-        icon: <MdShoppingBag />,
+        path: "/admin/movie",
+        icon: <MdMovie />,
       },
       {
         title: "Giao dich",

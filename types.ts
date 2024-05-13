@@ -59,6 +59,39 @@ export const FormDataSchema = z.object({
   zip: z.string().min(1, 'Zip is required')
 })
 
-export type Showtime = z.infer<typeof Showtime>;
 
+export const Account = z.object({
+  id_acc: z.number(),
+  tk: z.string(),
+  mk: z.string(),
+  email: z.string(),
+  role: z.string(),
+});
+
+export const Kh = z.object({
+  id_kh: z.number(),
+  cccd: z.string(),
+  ten: z.string(),
+  diachi: z.string(),
+  gioitinh: z.string(),
+  account: Account,
+});
+
+export const User = z.object({
+  id: z.number(),
+  img: z.string().optional(),
+  name: z.string(),
+  username: z.string(),
+  email: z.string(),
+  createdAt: z.date(),
+  isAdmin: z.boolean(),
+  isActive: z.boolean(),
+  role: z.string(),
+  action: z.string(),
+});
+
+export type User = z.infer<typeof User>;
+export type Kh = z.infer<typeof Kh>;
+export type Account = z.infer<typeof Account>;
+export type Showtime = z.infer<typeof Showtime>;
 export type Movie = z.infer<typeof Movie>;
