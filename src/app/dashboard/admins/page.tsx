@@ -72,7 +72,7 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
     <div className={styles.container}>
       <div className={styles.top}>
         <Search placeholder="Search for a user..." />
-        <Link href="/admin/users/add">
+        <Link href="/dashboard/admins/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
       </div>
@@ -103,7 +103,7 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
               {/* <td>{user.createdAt?.toString().slice(4, 16)}</td> */}
               <td>
                 <div className={styles.buttons}>
-                  <Link href={`/admin/users/${kh.id_kh}`}>
+                  <Link href={`/admin/admins/${kh.id_kh}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>

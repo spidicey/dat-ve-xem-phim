@@ -1,8 +1,6 @@
-import React, { Suspense, useEffect, useState } from "react";
-import { fetchTrendingMovies } from "../lib/request";
-import { Movie } from "../../types";
-import MovieCard from "@/components/movies/card-movie";
+"use client";
 import Header from "@/components/main-nav";
+import MovieCard from "@/components/movies/card-movie";
 import {
   Pagination,
   PaginationContent,
@@ -12,42 +10,60 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-export default async function Page() {
-  const movies: Movie[] = await fetchTrendingMovies(1);
+import axios from "axios";
+import { Suspense, useState } from "react";
+import useSWR from "swr";
+import { PhimType } from "../../types";
+import MoviePagination from "@/components/movies/pagination";
+const fetcher = (url: string): Promise<any> =>
+  axios.get(url).then((res) => res.data);
+export default function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+  // const movies: Movie[] = await fetchTrendingMovies(1);
+  const [page, setPage] = useState(Number(searchParams?.page) || 1);
+  const size = 16;
+  const { data, error } = useSWR(
+    `http://localhost:8080/api/phim?page=${page}&size=${size}`,
+    fetcher
+  );
+  if (error)
+    return (
+      <>
+        {/* <Header /> */}
+        <div>Failed to load</div>
+      </>
+    );
+  if (!data)
+    return (
+      <>
+        {/* <Header /> */}
+        <div>Loading</div>
+      </>
+    );
+
   return (
     <>
-        <Header />
+      <Header />
       <div className="grid grid-cols-4 gap-4 mt-4">
         <Suspense fallback={<div>Loading...</div>}>
-          {movies.map((movie: Movie) => (
+          {data.content.map((movie: PhimType) => (
+            // console.log(movie),
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </Suspense>
       </div>
-      <Pagination className="my-2">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#" isActive>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <MoviePagination
+        totalPosts={data.totalPages * size}
+        postsPerPage={size}
+        currentPage={page}
+        setCurrentPage={setPage}
+      ></MoviePagination>
     </>
   );
 }

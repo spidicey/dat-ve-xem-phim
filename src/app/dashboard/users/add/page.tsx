@@ -1,17 +1,17 @@
+"use client";
 import styles from "@/components/dashboard/users/singleUser/singleUser.module.css";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import { use } from "react";
+import { FieldValue, FieldValues, useForm } from "react-hook-form";
 
-const SingleUserPage = async ({ params }: { params: any }) => {
-  const { id } = params;
-  console.log(id)
-  console.log("asdasd");
+const SingleUserPage = ({ params }: { params: any }) => {
   //   const user = await fetchUser(id);
   type User = {
     id: number;
     img?: string;
     name: string;
     username: string;
+    password: string;
     email: string;
     phone?: string;
     address?: string;
@@ -27,6 +27,7 @@ const SingleUserPage = async ({ params }: { params: any }) => {
     img: "/path/to/image.jpg",
     name: "John Doe",
     username: "johndoe",
+    password: "password",
     email: "john.doe@example.com",
     createdAt: new Date(),
     isAdmin: true,
@@ -34,17 +35,30 @@ const SingleUserPage = async ({ params }: { params: any }) => {
     role: "Admin",
     action: "Edit",
   };
-  
-  const { register, handleSubmit } = useForm({
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    getValues,
+  } = useForm({
     defaultValues: {
+      id: user.id,
       username: user.username,
       email: user.email,
+      password: user.password,
       phone: user.phone,
       address: user.address,
-      isAdmin: user.isAdmin ? "true" : "false"
-    }
+      isAdmin: user.isAdmin ? "true" : "false",
+    },
   });
-  
+
+  const onsubmit = async (data: FieldValues) => {
+    console.log(data);
+    // const res = await fetch("/api/users", {
+    //
+  };
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
@@ -54,37 +68,42 @@ const SingleUserPage = async ({ params }: { params: any }) => {
         {user.username}
       </div>
       <div className={styles.formContainer}>
-        <form action={""} className={styles.form}>
-          <input type="hidden" name="id" value={user.id} />
+        <form onSubmit={handleSubmit(onsubmit)} className={styles.form}>
+          <input type="hidden" {...register("id")}  required />
           <label>Username</label>
-          <input type="text" name="username" defaultValue={user.username} />
+          <input
+            type="text"
+            {...register("username")}
+            required
+          />
           <label>Email</label>
-          <input type="email" name="email" defaultValue={user.email} />
+          <input
+            type="email"
+            {...register("email")}
+            required
+          />
           <label>Password</label>
-          <input type="password" name="password" />
+          <input type="password" {...register("password")} required />
           <label>Phone</label>
-          <input type="text" name="phone" defaultValue={user.phone} />
+          <input
+            type="text"
+            {...register("phone")}
+            required
+          />
           <label>Address</label>
-          <textarea name="address" defaultValue={user.address} />
+          <textarea
+            {...register("address")}
+            required
+          />
           <label>Is Admin?</label>
           <select
-            name="isAdmin"
-            id="isAdmin"
-            defaultValue={user.isAdmin ? "true" : "false"}
+            {...register("isAdmin")}
+            required
           >
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
-          <label>Is Active?</label>
-          <select
-            name="isActive"
-            id="isActive"
-            value={user.isActive ? "true" : "false"}
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-          <button>Update</button>
+          <button>Thêm</button>
         </form>
       </div>
     </div>

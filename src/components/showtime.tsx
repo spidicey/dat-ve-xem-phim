@@ -20,7 +20,7 @@ const showtimes: Showtime[] = [
     id_room: 1,
     sub: "2D Phụ Đề Việt",
     schedule_start: ["2:45", "3:45", "4:45", "23:45", "1:45", "5:45"],
-    day: "20/04/2024",
+    day: "15/05/2024",
   },
   {
     id_cinema: 2,

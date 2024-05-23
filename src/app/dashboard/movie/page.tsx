@@ -14,7 +14,7 @@ export default async function Page() {
     <div className={styles.container}>
       <div className={styles.top}>
         <Search placeholder="Search for a user..." />
-        <Link href="/admin/users/add">
+        <Link href="/admin/movie/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
       </div>
@@ -44,7 +44,7 @@ export default async function Page() {
               {/* <td>{user.createdAt?.toString().slice(4, 16)}</td> */}
               <td>
                 <div className={styles.buttons}>
-                  <Link href={`/admin/movie/${movie.id}`}>
+                  <Link href={`/dashboard/movie/${movie.id}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>

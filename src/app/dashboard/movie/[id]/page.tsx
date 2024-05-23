@@ -1,51 +1,23 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import MovieComponent from "@/components/movies/movie";
-import MovieNav from "@/components/movies/movie-nav";
 import fetchMovieDetails, { fetchGenres } from "@/lib/request";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import {
-  Calendar,
-  Check,
-  ChevronsUpDown,
-  MoreHorizontal,
-  Tags,
-  Trash,
-  User,
-  Plus,
+    Plus,
+    Trash
 } from "lucide-react";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import { Movie } from "../../../../../types";
 const labels = [
   "feature",

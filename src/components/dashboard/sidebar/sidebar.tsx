@@ -20,17 +20,17 @@ const menuItems = [
     list: [
       {
         title: "Quản trị viên",
-        path: "/admin/admins",
+        path: "/dashboard/admins",
         icon: <MdOutlineAdminPanelSettings />,
       },
       {
         title: "Khách hàng",
-        path: "/admin/users",
+        path: "/dashboard/users",
         icon: <MdSupervisedUserCircle />,
       },
       {
         title: "Phim",
-        path: "/admin/movie",
+        path: "/dashboard/movie",
         icon: <MdMovie />,
       },
       {

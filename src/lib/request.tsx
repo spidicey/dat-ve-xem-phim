@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
 import { Movie } from "../../types";
 import fs from "fs";
@@ -8,6 +9,44 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
 const READ_ACCESS_TOKEN: string =
   process.env.NEXT_PUBLIC_READ_ACCESS_TOKEN ?? "";
+export const fetcher = async (url: string) => {
+  const res = await axios.get(url, {
+    headers: {
+      accept: "application/json",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4",
+    },
+    timeout: 5000,
+  });
+  return res.data;
+};
+
+
+export const fetchMovies = async (): Promise<Movie[]> => {
+  const { data, error } = useSWR(`localhost:8080/api/phim`, fetcher);
+
+  return data;
+  ;
+}
+
+export const test = async (): Promise<Movie[]> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+    },
+  };
+
+  const res = await axios.get(
+    `http://localhost:8080/api/phim`,
+    options
+  );
+
+  const data = res.data;
+  const data1 = data?.results;
+
+  return data?.results as Movie[];
+};
+
 export const fetchTrendingMovies = async (page: number): Promise<Movie[]> => {
   const options = {
     headers: {
@@ -70,10 +109,7 @@ export const getVNpayLink = async ({ amount, orderInfo }: orderInfo) => {
     },
     timeout: 5000,
   };
-  const res = await axios.get(
-    "http://127.0.0.1:8080/api/submitOrder",
-    options
-  );
+  const res = await axios.get("http://127.0.0.1:8080/api/submitOrder", options);
   return res.data;
 };
 
@@ -134,3 +170,7 @@ export const fetchGenres = async (): Promise<any[]> => {
   const data = res.data.genres;
   return data;
 };
+function useSWR(arg0: string, fetcher: (url: string) => Promise<any>): { data: any; error: any; } {
+  throw new Error("Function not implemented.");
+}
+

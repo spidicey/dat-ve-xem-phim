@@ -1,23 +1,18 @@
 "use client";
-import * as React from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import logo from "./logo.png";
 // import { Icons } from "@/components/icons"
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Search from "./search";
-import { DropdownMenu } from "./ui/dropdown-menu";
-import { Account } from "./user-dropdown";
 import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
+import { Account } from "./user-dropdown";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -78,43 +73,17 @@ export default function Header() {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          {/* <NavigationMenuItem>
-            <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
-            <NavigationMenuContent className="right:0 absolute left-auto top-full w-auto">
-              <ul className="grid gap-3 p-6 md:w-[100px] lg:w-[200px] lg:grid-cols-1">
-                <ListItem href="/docs" title="Introduction"></ListItem>
-                <ListItem
-                  href="/docs/installation"
-                  title="Installation"
-                ></ListItem>
-                <ListItem
-                  href="/docs/primitives/typography"
-                  title="Typography"
-                ></ListItem>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-            <NavigationMenuContent className="right:0 absolute left-auto top-full w-auto">
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem> */}
-
           <NavigationMenuItem>
             <Link href="/docs" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Documentation
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/movie/search" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Tìm kiếm phim
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
@@ -128,29 +97,3 @@ export default function Header() {
     </nav>
   );
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";

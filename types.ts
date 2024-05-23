@@ -37,6 +37,8 @@ export const Movie = z.object({
   status: z.string(),
 });
 
+
+
 export const Showtime = z.object({
   id_cinema: z.number(),
   cinema_name: z.string(),
@@ -90,6 +92,36 @@ export const User = z.object({
   action: z.string(),
 });
 
+
+export const TheLoai = z.object({
+  idTheLoai: z.number(),
+  theLoai: z.string(),
+});
+
+export const Admin = z.object({
+  id_admin: z.number(),
+  ten: z.string(),
+  cccd: z.string(),
+  gioiTinh: z.string(),
+  account: Account,
+});
+
+export const Phim = z.object({
+  id: z.number(),
+  anh: z.string().optional(),
+  ten: z.string(),
+  quocGia: z.string().optional(),
+  namPhatHanh: z.date().optional(),
+  trangThai: z.string().optional(),
+  thoiLuong: z.number(),
+  moTa: z.string(),
+  doTuoi: z.boolean(),
+  admin: Admin,
+  theLoais: z.array(TheLoai),
+});
+
+export type PhimType = z.infer<typeof Phim>;
+export type TheLoaiType = z.infer<typeof TheLoai>;
 export type User = z.infer<typeof User>;
 export type Kh = z.infer<typeof Kh>;
 export type Account = z.infer<typeof Account>;
