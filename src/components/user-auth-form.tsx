@@ -33,11 +33,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
-
-    const signInResult = await signIn("email", {
-      email: data.email.toLowerCase(),
-      redirect: false,
-      // callbackUrl: searchParams?.get("from") || "/",
+    console.log(data);
+    const signInResult = await signIn("credentials", {
+      username: data.username,
+      password: data.password,
+      redirect: true,
+      callbackUrl:  "/",
     });
 
     setIsLoading(false);
@@ -61,22 +62,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
+            <Label className="sr-only">Username or Email</Label>
             <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
+              id="username"
+              type="input"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading || isGitHubLoading}
-              {...register("email")}
+              {...register("username")}
             />
-            {errors?.email && (
+            {errors?.username && (
               <p className="px-1 text-xs text-red-600">
-                {errors.email.message}
+                {errors.username.message}
               </p>
             )}
           </div>
@@ -92,7 +90,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading || isGitHubLoading}
-              {...register("email")}
+              {...register("password")}
             />
             {errors?.password && (
               <p className="px-1 text-xs text-red-600">
@@ -104,7 +102,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In with Email
+            Sign In
           </button>
         </div>
       </form>

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import Providers from "@/lib/query-provider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
-import { PaginationDemo } from "@/components/pagination";
+import "./globals.css";
+import Provider from "./Provider";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Đặt vé xem phim",
@@ -22,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Provider>
         <div>{children}</div>
         <Toaster />
+        </Provider>
       </body>
     </html>
   );

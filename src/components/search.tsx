@@ -1,20 +1,26 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import {
+  redirect,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
   function handleSearch(term: string) {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams || undefined); // Add null check
     if (term) {
       params.set("query", term);
     } else {
       params.delete("query");
     }
-    console.log(term);
+    // console.log(term);
 
     replace(`${pathname}?${params.toString()}`);
   }
@@ -29,13 +35,12 @@ export default function Search({ placeholder }: { placeholder: string }) {
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
-        defaultValue={searchParams.get('query')?.toString()}
+        defaultValue={searchParams?.get("query")?.toString()} // Add null check
       />
       {/* <Button> */}
-      <MagnifyingGlassIcon
-        onClick={(e) => console.log(1)}
-        className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 cursor-pointer"
-      />
+      <Link href={`/movie/search?query=${searchParams?.get("query")}`}>
+        <MagnifyingGlassIcon className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900 cursor-pointer" />
+      </Link>
       {/* </Button> */}
     </div>
   );

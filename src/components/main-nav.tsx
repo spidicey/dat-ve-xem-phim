@@ -13,6 +13,7 @@ import {
 import Search from "./search";
 import { Button } from "./ui/button";
 import { Account } from "./user-dropdown";
+import { useSession } from "next-auth/react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -53,6 +54,8 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export default function Header() {
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <nav className="flex justify-center items-center space-x-2 bg-slate-300">
       <Link href="/">
@@ -90,10 +93,14 @@ export default function Header() {
         </NavigationMenuList>
       </NavigationMenu>
       <Search placeholder="Search" />
-      <Account />
-      <Link href="/login">
-        <Button variant="outline">Login</Button>
-      </Link>
+      {session ? (
+        <Account />
+      ) : (
+        <Link href="/login">
+          <Button variant="outline">Login</Button>
+        </Link>
+      )}
+      {/* <Account /> */}
     </nav>
   );
 }
