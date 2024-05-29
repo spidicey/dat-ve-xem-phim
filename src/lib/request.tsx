@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
-import { Movie } from "../../types";
+import { GheType, Movie, PhimType } from "../../types";
 import fs from "fs";
 import path from "path";
 
@@ -19,32 +19,6 @@ export const fetcher = async (url: string) => {
     timeout: 5000,
   });
   return res.data;
-};
-
-
-export const fetchMovies = async (): Promise<Movie[]> => {
-  const { data, error } = useSWR(`localhost:8080/api/phim`, fetcher);
-
-  return data;
-  ;
-}
-
-export const test = async (): Promise<Movie[]> => {
-  const options = {
-    headers: {
-      accept: "application/json",
-    },
-  };
-
-  const res = await axios.get(
-    `http://localhost:8080/api/phim`,
-    options
-  );
-
-  const data = res.data;
-  const data1 = data?.results;
-
-  return data?.results as Movie[];
 };
 
 export const fetchTrendingMovies = async (page: number): Promise<Movie[]> => {
@@ -69,22 +43,37 @@ type orderInfo = {
   amount: number;
   orderInfo: string;
 };
-export default async function fetchMovieDetails(id: number): Promise<Movie> {
+export async function fetchMovieDetails(id: number): Promise<PhimType> {
   // console.log("test3 " + process.env.NEXT_PUBLIC_API_KEY);
   const options = {
     headers: {
       accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4",
+    },
+    timeout: 5000,
+  };
+  const res = await axios.get(`http://localhost:8080/api/phim/${id}`, options);
+  const data = res.data;
+  return data;
+}
+
+export async function fetchSeatByRoomID(id: number): Promise<GheType[]> {
+  // console.log("test3 " + process.env.NEXT_PUBLIC_API_KEY);
+  const options = {
+    headers: {
+      accept: "application/json",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4",
     },
     timeout: 5000,
   };
   const res = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?language=vi-vie`,
+    `http://localhost:8080/api/ghe/phong/${id}`,
     options
   );
   const data = res.data;
-  return data as Movie;
+  return data;
 }
 
 export const getMovies = async (query: string) => {
@@ -170,7 +159,9 @@ export const fetchGenres = async (): Promise<any[]> => {
   const data = res.data.genres;
   return data;
 };
-function useSWR(arg0: string, fetcher: (url: string) => Promise<any>): { data: any; error: any; } {
+function useSWR(
+  arg0: string,
+  fetcher: (url: string) => Promise<any>
+): { data: any; error: any } {
   throw new Error("Function not implemented.");
 }
-

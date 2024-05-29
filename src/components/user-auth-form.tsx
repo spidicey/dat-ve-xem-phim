@@ -33,7 +33,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
-    console.log(data);
     const signInResult = await signIn("credentials", {
       username: data.username,
       password: data.password,

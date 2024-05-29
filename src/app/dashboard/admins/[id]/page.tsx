@@ -3,8 +3,6 @@ import Image from "next/image";
 
 const SingleUserPage = async ({ params }: { params: any }) => {
   const { id } = params;
-  console.log(id)
-  console.log("asdasd");
   //   const user = await fetchUser(id);
   type User = {
     id: number;

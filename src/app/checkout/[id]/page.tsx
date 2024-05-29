@@ -7,16 +7,18 @@ import {
   ChevronRightIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { Card } from "@/components/ui/card";
-import { Showtime } from "../../../types";
+import { GheType, Showtime, SuatChieuType } from "../../../../types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MoMo, Vnpay } from "@/components/logo";
 import PaymentOption from "@/components/payment-option";
 import Timer from "@/components/timer";
-import { getVNpayLink } from "@/lib/request";
-import { useRouter } from 'next/navigation'
+import { fetchSeatByRoomID, getVNpayLink } from "@/lib/request";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import useSWR from "swr";
 type Step = {
   icon: React.ReactNode | any;
   label: string;
@@ -24,7 +26,7 @@ type Step = {
 type OrderInfo = {
   amount: number;
   orderInfo: string;
-}
+};
 
 const steps: Step[] = [
   { icon: <LayoutGridIcon size={34} />, label: "Chọn ghế" },
@@ -45,8 +47,35 @@ const showtime: Showtime = {
   day: "14/04/2024",
 };
 // 5 minutes for timer
-
-export default function Page() {
+const fetcher = async (url: string) => {
+  const res = await axios.get(url, {
+    headers: {
+      // accept: "application/json",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4",
+    },
+    timeout: 5000,
+  });
+  return res.data;
+};
+export default function Page({
+  params,
+}: {
+  params: {
+    id: number;
+  };
+}) {
+  const { data, error } = useSWR<SuatChieuType>(
+    `http://localhost:8080/api/suatChieu/${params.id}`,
+    fetcher
+  );
+  const [Ghes, setGhes] = useState<GheType[] | null>(null);
+  useEffect(() => {
+    const roomID = data?.phong.idPhong; // replace with your room ID
+    fetchSeatByRoomID(roomID || 1)
+      .then((data) => setGhes(data))
+      .catch((error) => console.error(error));
+  }, [data]);
   let timeout: NodeJS.Timeout;
   const COUNTDOWN_AMOUNT_TOTAL = 5 * 60;
   const timerRef = useRef<HTMLDivElement>(null);
@@ -74,11 +103,14 @@ export default function Page() {
       setCurrentStep((step) => step - 1);
     }
   };
-  const router = useRouter()
+  const router = useRouter();
   const handleSutmit = async () => {
     try {
-      const VNPayLink = await getVNpayLink({amount:numTogglesOn*50000,orderInfo:"asd"});
-      router.push(VNPayLink)
+      const VNPayLink = await getVNpayLink({
+        amount: numTogglesOn * 50000,
+        orderInfo: "asd",
+      });
+      router.push(VNPayLink);
       console.log(VNPayLink);
       // if (!response.ok) {
       //   throw new Error('VNPay API request failed');
@@ -198,14 +230,20 @@ export default function Page() {
             <div className="w-1/3 flex-col mx-2 my-2 justify-center items-center">
               <Card className="w-full mb-2">
                 <div className="p-4">
-                  <p>{showtime.film_name}</p>
-                  <p className="font-bold">{showtime.cinema_name}</p>
+                  <p>{data?.phim.ten}</p>
+                  <p className="font-bold">{data?.phong.rap.tenRap}</p>
                   <p>
                     Suất:
-                    <strong>{`${showtime.schedule_start[0]} ${showtime.day}`}</strong>
+                    <strong>{`${
+                      data?.gioBatDau.split("T")[1].split(".")[0]
+                    } ${data?.ngayChieu
+                      .split("T")[0]
+                      .split("-")
+                      .reverse()
+                      .join("/")}`}</strong>
                   </p>
                   <p>
-                    Phòng chiếu: <strong>{showtime.id_room}</strong>
+                    Phòng chiếu: <strong>{data?.phong.tenPhong}</strong>
                   </p>
                 </div>
               </Card>

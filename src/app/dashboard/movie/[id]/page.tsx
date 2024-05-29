@@ -38,11 +38,9 @@ export default function page({ params }: { params: any }) {
     const fetchMovie = async () => {
       const movieData = await fetchMovieDetails(id);
       const genreData = await fetchGenres();
-      setMovie(movieData);
       setGenres(genreData);
       console.log(genreData);
       setLoading(false);
-      console.log(movieData.adult);
     };
     fetchMovie();
   }, [id]);

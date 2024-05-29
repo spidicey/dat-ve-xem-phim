@@ -26,7 +26,7 @@ export default function DateButton() {
   );
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const dayParams = searchParams.get("day") || dates[0].date;
+  const dayParams = searchParams?.get("day") || dates[0].date;
   const router = useRouter();
   // router.replace({ pathname, search: `?day=${dayParams}` }.toString());
   return (

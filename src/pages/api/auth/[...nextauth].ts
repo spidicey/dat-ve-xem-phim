@@ -18,7 +18,6 @@ export default NextAuth({
         // Add logic here to look up the user from the credentials supplied
 
         try {
-          console.log(credentials?.username, credentials?.password);
           const res = await fetch(
             "http://localhost:8080/api/auth/account/login",
             {
@@ -40,7 +39,6 @@ export default NextAuth({
           const user = await res.json();
 
           if (res.ok && user) {
-            console.log(user);
             return user;
           }
           // Return null if user data could not be retrieved

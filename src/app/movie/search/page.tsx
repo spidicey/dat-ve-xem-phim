@@ -31,7 +31,6 @@ export default function Page({
     `http://localhost:8080/api/phim/search?query=${searchParams?.query}`,
     fetcher
   );
-  console.log(data);
   if (error)
     return (
       <>
@@ -53,7 +52,6 @@ export default function Page({
       <div className="grid grid-cols-4 gap-4 mt-4">
         <Suspense fallback={<div>Loading...</div>}>
           {data.map((movie: PhimType) => (
-            // console.log(movie),
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </Suspense>

@@ -37,8 +37,6 @@ export const Movie = z.object({
   status: z.string(),
 });
 
-
-
 export const Showtime = z.object({
   id_cinema: z.number(),
   cinema_name: z.string(),
@@ -51,16 +49,15 @@ export const Showtime = z.object({
 });
 
 export const FormDataSchema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
-  country: z.string().min(1, 'Country is required'),
-  street: z.string().min(1, 'Street is required'),
-  city: z.string().min(1, 'City is required'),
-  state: z.string().min(1, 'State is required'),
-  zip: z.string().min(1, 'Zip is required')
-})
-
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  country: z.string().min(1, "Country is required"),
+  street: z.string().min(1, "Street is required"),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  zip: z.string().min(1, "Zip is required"),
+});
 
 export const Account = z.object({
   id_acc: z.number(),
@@ -92,7 +89,6 @@ export const User = z.object({
   action: z.string(),
 });
 
-
 export const TheLoai = z.object({
   idTheLoai: z.number(),
   theLoai: z.string(),
@@ -105,7 +101,24 @@ export const Admin = z.object({
   gioiTinh: z.string(),
   account: Account,
 });
+export const Rap = z.object({
+  idRap: z.number(),
+  tenRap: z.string(),
+  diaChi: z.string(),
+});
 
+export const Phong = z.object({
+  idPhong: z.number(),
+  tenPhong: z.string(),
+  rap: Rap,
+});
+export const Ghe = z.object({
+  idGhe: z.number(),
+  loaiGhe: z.string(),
+  phong: Phong, // Assuming Phong schema is already defined
+  hangGhe: z.string(),
+  soGhe: z.string(),
+});
 export const Phim = z.object({
   id: z.number(),
   anh: z.string().optional(),
@@ -119,9 +132,25 @@ export const Phim = z.object({
   admin: Admin,
   theLoais: z.array(TheLoai),
 });
+export const SuatChieu = z.object({
+  idSuatChieu: z.number(),
+  gioBatDau: z.string(),
+  thoiLuong: z.number(),
+  ngonNgu: z.string(),
+  ngayChieu: z.string().transform((data) => {
+    return data.split("T")[0];
+  }),
+  sub: z.string(),
+  gia: z.number(),
+  admin: Admin,
+  phong: Phong,
+  phim: Phim,
+});
 
 export type PhimType = z.infer<typeof Phim>;
 export type TheLoaiType = z.infer<typeof TheLoai>;
+export type SuatChieuType = z.infer<typeof SuatChieu>;
+export type GheType = z.infer<typeof Ghe>;
 export type User = z.infer<typeof User>;
 export type Kh = z.infer<typeof Kh>;
 export type Account = z.infer<typeof Account>;
