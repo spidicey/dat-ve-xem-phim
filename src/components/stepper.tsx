@@ -1,12 +1,6 @@
 "use client";
-import {
-  LayoutGridIcon,
-  ShoppingBag,
-  CreditCard,
-  Inbox,
-  ChevronRightIcon,
-} from "lucide-react"; // replace with your actual icon library
-import React, { useState } from "react";
+import {ChevronRightIcon, CreditCard, Inbox, LayoutGridIcon, ShoppingBag,} from "lucide-react"; // replace with your actual icon library
+import React, {useState} from "react";
 
 type Step = {
   icon: React.ReactNode;

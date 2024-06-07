@@ -1,7 +1,7 @@
 "use client"
 import styles from "@/components/dashboard/users/singleUser/singleUser.module.css";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import {useForm} from "react-hook-form";
 
 const SingleUserPage =  ({ params }: { params: any }) => {
   const { id } = params;

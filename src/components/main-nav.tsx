@@ -4,16 +4,16 @@ import Link from "next/link";
 import logo from "./logo.png";
 // import { Icons } from "@/components/icons"
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Search from "./search";
-import { Button } from "./ui/button";
-import { Account } from "./user-dropdown";
-import { useSession } from "next-auth/react";
+import {Button} from "./ui/button";
+import {Account} from "./user-dropdown";
+import {useSession} from "next-auth/react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -55,7 +55,6 @@ const components: { title: string; href: string; description: string }[] = [
 
 export default function Header() {
   const { data: session } = useSession();
-  console.log(session);
   return (
     <nav className="flex justify-center items-center space-x-2 bg-slate-300">
       <Link href="/">
@@ -76,13 +75,13 @@ export default function Header() {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <Link href="/docs" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Documentation
               </NavigationMenuLink>
             </Link>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
           <NavigationMenuItem>
             <Link href="/movie/search" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>

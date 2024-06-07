@@ -1,9 +1,8 @@
 "use client";
 import MovieCard from "@/components/movies/card-movie";
-import MoviePagination from "@/components/movies/pagination";
-import { useState, Suspense } from "react";
+import {Suspense} from "react";
 import useSWR from "swr";
-import { PhimType } from "../../../../types";
+import {PhimType} from "../../../../types";
 import Header from "@/components/main-nav";
 import axios from "axios";
 
@@ -48,7 +47,6 @@ export default function Page({
 
   return (
     <>
-      <Header />
       <div className="grid grid-cols-4 gap-4 mt-4">
         <Suspense fallback={<div>Loading...</div>}>
           {data.map((movie: PhimType) => (

@@ -1,16 +1,13 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import {Button} from "@/components/ui/button";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from "@/components/ui/collapsible";
 import axios from "axios";
-import { ChevronsUpDown } from "lucide-react";
+import {ChevronsUpDown} from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 import useSWR from "swr";
-import { SuatChieuType } from "../../types";
+import {SuatChieuType} from "../../types";
+
 type GroupedShowtimes = Record<string, SuatChieuType[]>;
 
 const fetcher = async (url: string) => {

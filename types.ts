@@ -1,23 +1,4 @@
-import exp from "constants";
 import z from "zod";
-// export type Movie = {
-//     adult: boolean;
-//     backdrop_path: string;
-//     id: number;
-//     title: string;
-//     original_language: string;
-//     original_title: string;
-//     overview: string;
-//     poster_path: string;
-//     media_type: string;
-//     genres: any[];
-//     popularity: number;
-//     release_date: string;
-//     video: boolean;
-//     vote_average: number;
-//     vote_count: number;
-//     status: string;
-//   };
 export const Movie = z.object({
   adult: z.boolean(),
   backdrop_path: z.string(),
@@ -89,6 +70,14 @@ export const User = z.object({
   action: z.string(),
 });
 
+export const KhachHang = z.object({
+  id_kh: z.number(),
+  ten: z.string(),
+  cccd: z.string(),
+  diaChi: z.string().optional(),
+  gioiTinh: z.string(),
+  account: Account,
+});
 export const TheLoai = z.object({
   idTheLoai: z.number(),
   theLoai: z.string(),
@@ -97,7 +86,7 @@ export const TheLoai = z.object({
 export const Admin = z.object({
   id_admin: z.number(),
   ten: z.string(),
-  cccd: z.string(),
+  cccd: z.string().min(9),
   gioiTinh: z.string(),
   account: Account,
 });
@@ -146,11 +135,27 @@ export const SuatChieu = z.object({
   phong: Phong,
   phim: Phim,
 });
+export const HoaDon = z.object({
+  idHoaDon: z.number(),
+  khachHang: KhachHang,
+  ngayTao: z.string(),
+});
+export const Ve = z.object({
+  idVe: z.number(),
+  ghe: Ghe,
+  suatChieu: SuatChieu,
+  hoaDon: HoaDon,
+});
 
 export type PhimType = z.infer<typeof Phim>;
 export type TheLoaiType = z.infer<typeof TheLoai>;
 export type SuatChieuType = z.infer<typeof SuatChieu>;
 export type GheType = z.infer<typeof Ghe>;
+export type VeType = z.infer<typeof Ve>;
+export type AdminType = z.infer<typeof Admin>;
+export type RapType = z.infer<typeof Rap>;
+export type HoaDonType = z.infer<typeof HoaDon>;
+export type KhachHangType = z.infer<typeof KhachHang>;
 export type User = z.infer<typeof User>;
 export type Kh = z.infer<typeof Kh>;
 export type Account = z.infer<typeof Account>;

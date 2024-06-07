@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import Provider from "./Provider";
+import Header from "@/components/main-nav";
+
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Đặt vé xem phim",
@@ -21,8 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-        <div>{children}</div>
-        <Toaster />
+          <Header />
+          <div>{children}</div>
+          <Toaster />
         </Provider>
       </body>
     </html>

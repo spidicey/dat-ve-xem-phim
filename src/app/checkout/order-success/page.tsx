@@ -1,6 +1,7 @@
-import { Card } from '@/components/ui/card'
+import {Card} from '@/components/ui/card'
 import React from 'react'
-import { Success } from '@/components/logo';
+import {Success} from '@/components/logo';
+
 export default function Page() {
   return (
     <div className="flex h-screen flex-col md:flex-row md:overflow-hidden bg-slate-600">

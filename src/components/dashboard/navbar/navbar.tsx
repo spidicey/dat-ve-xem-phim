@@ -1,20 +1,14 @@
 "use client";
-import { usePathname } from "next/navigation";
-import styles from "./navbar.module.css";
-import {
-  MdNotifications,
-  MdOutlineChat,
-  MdPublic,
-  MdSearch,
-} from "react-icons/md";
+import {usePathname} from "next/navigation";
+import {MdNotifications, MdOutlineChat, MdPublic, MdSearch,} from "react-icons/md";
 
 const Navbar = () => {
   const pathname = usePathname();
-
+  
   return (
     <div className="bg-slate-400 p-5 rounded-lg bg-[var(--bgSoft)] flex items-center justify-between">
       <div className="text-[var(--textSoft)] font-bold capitalize">
-        {pathname.split("/").pop()}
+        {pathname?.split("/").pop()}
       </div>
       <div className="flex items-center space-x-5">
         <div className="flex items-center space-x-2 bg-slate-700 p-2 rounded-lg text-white">

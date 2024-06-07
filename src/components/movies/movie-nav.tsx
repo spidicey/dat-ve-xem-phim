@@ -1,15 +1,12 @@
 "use client";
 import React from "react";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { useParams, usePathname } from "next/navigation";
+import {useParams, usePathname} from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 

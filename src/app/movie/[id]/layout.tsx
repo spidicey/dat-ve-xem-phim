@@ -1,8 +1,9 @@
 import MovieNav from "@/components/movies/movie-nav";
-import { fetchMovieDetails } from "@/lib/request";
+import {fetchMovieDetails} from "@/lib/request";
 import MovieComponent from "@/components/movies/movie";
 import Header from "@/components/main-nav";
-import { PhimType } from "../../../../types";
+import {PhimType} from "../../../../types";
+
 export default async function Layout({
   children,
   params,

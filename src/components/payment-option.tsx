@@ -1,6 +1,5 @@
-import { MoMo, Vnpay } from "./logo";
-import { Label } from "./ui/label";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import {Label} from "./ui/label";
+import {RadioGroupItem} from "./ui/radio-group";
 
 type PaymentOptionProps = {
   value: string;

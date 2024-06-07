@@ -1,5 +1,5 @@
-import { Fail } from '@/components/logo'
-import { Card } from '@/components/ui/card'
+import {Fail} from '@/components/logo'
+import {Card} from '@/components/ui/card'
 import React from 'react'
 
 export default function Page() {

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import {useState} from "react";
+import {motion} from "framer-motion";
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { FormDataSchema } from "../../types";
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {FormDataSchema} from "../../types";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 

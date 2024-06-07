@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { PhimType, TheLoaiType } from "../../../types";
+import {PhimType, TheLoaiType} from "../../../types";
 
 export default function MovieComponent({ movie }: { movie: PhimType }) {
   const IMG_BASE_URL: String | undefined =

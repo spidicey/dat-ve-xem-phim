@@ -1,17 +1,11 @@
 "use client";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import {Button} from "@/components/ui/button";
 
 export function AlertDialogDemo() {
   return (

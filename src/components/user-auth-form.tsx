@@ -1,19 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { useSearchParams } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
-import { useForm } from "react-hook-form";
+import {useSearchParams} from "next/navigation";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {signIn} from "next-auth/react";
+import {useForm} from "react-hook-form";
 import * as z from "zod";
 
-import { cn } from "@/lib/utils";
-import { userAuthSchema } from "@/lib/validations/auth";
-import { buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { toast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/icons";
+import {cn} from "@/lib/utils";
+import {userAuthSchema} from "@/lib/validations/auth";
+import {buttonVariants} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {toast} from "@/components/ui/use-toast";
+import {Icons} from "@/components/icons";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -37,7 +37,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       username: data.username,
       password: data.password,
       redirect: true,
-      callbackUrl:  "/",
+      callbackUrl: "/",
     });
 
     setIsLoading(false);
@@ -55,7 +55,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       description: "We sent you a login link. Be sure to check your spam too.",
     });
   }
-
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>

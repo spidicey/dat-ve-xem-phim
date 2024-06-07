@@ -1,6 +1,6 @@
 "use client";
 import MovieShowtime from "@/components/showtime";
-import { usePathname, useSearchParams } from "next/navigation";
+import {usePathname, useSearchParams} from "next/navigation";
 import React from "react";
 
 export default function Page() {

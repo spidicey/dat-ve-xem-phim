@@ -1,17 +1,16 @@
 import Image from "next/image";
 import MenuLink from "./menuLink/menuLink";
 import {
-  MdDashboard,
-  MdSupervisedUserCircle,
-  MdShoppingBag,
-  MdOutlineAdminPanelSettings,
-  MdAttachMoney,
-  MdWork,
-  MdMovie,
-  MdOutlineSettings,
-  MdHelpCenter,
-  MdLogout,
+    MdAttachMoney,
+    MdHelpCenter,
+    MdLogout,
+    MdMovie,
+    MdOutlineAdminPanelSettings,
+    MdOutlineSettings,
+    MdSupervisedUserCircle,
+    MdWork,
 } from "react-icons/md";
+import { signOut } from "next-auth/react";
 // import { auth, signOut } from "@/app/auth";
 
 const menuItems = [
@@ -34,8 +33,8 @@ const menuItems = [
         icon: <MdMovie />,
       },
       {
-        title: "Giao dich",
-        path: "/dashboard/transactions",
+        title: "Suất chiếu",
+        path: "/dashboard/suatchieu",
         icon: <MdAttachMoney />,
       },
     ],
@@ -69,6 +68,16 @@ const menuItems = [
 
 const Sidebar = async () => {
   // const { user } = await auth();
+  // const session = await getSession();
+  // // @ts-ignore
+  // console.log(session);
+  // //@ts-ignore
+  // if (session?.user?.role !== "admin") {
+  //   return <div>ko co quyen</div>;
+  // }
+  // if (!session) {
+  //   redirect("/login");
+  // }
   return (
     <div className="sticky top-10">
       <div className="flex items-center space-x-5 mb-5">
@@ -96,17 +105,10 @@ const Sidebar = async () => {
           </li>
         ))}
       </ul>
-      <form
-        action={async () => {
-          "use server";
-          // await signOut();
-        }}
-      >
-        <button className="flex items-center space-x-2 py-5 my-1 w-full text-white rounded-lg bg-none border-none cursor-pointer hover:bg-[#2e374a]">
+        <button onClick={() => signOut()} className="flex items-center space-x-2 py-5 my-1 w-full text-white rounded-lg bg-none border-none cursor-pointer hover:bg-[#2e374a]">
           <MdLogout />
           Logout
         </button>
-      </form>
     </div>
   );
 };

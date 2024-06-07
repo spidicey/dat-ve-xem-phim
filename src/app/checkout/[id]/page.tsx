@@ -1,24 +1,29 @@
 "use client";
 import {
-  LayoutGridIcon,
-  ShoppingBag,
+  ChevronRightIcon,
   CreditCard,
   Inbox,
-  ChevronRightIcon,
+  LayoutGridIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useRef, useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { Card } from "@/components/ui/card";
-import { GheType, Showtime, SuatChieuType } from "../../../../types";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { GheType, Showtime, SuatChieuType, VeType } from "../../../../types";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { MoMo, Vnpay } from "@/components/logo";
 import PaymentOption from "@/components/payment-option";
 import Timer from "@/components/timer";
-import { fetchSeatByRoomID, getVNpayLink } from "@/lib/request";
+import {
+  fetchReservedGheBySuatChieuId,
+  fetchSeatByRoomID,
+  getVNpayLink,
+} from "@/lib/request";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import useSWR from "swr";
+import { useSession } from "next-auth/react";
+
 type Step = {
   icon: React.ReactNode | any;
   label: string;
@@ -36,17 +41,6 @@ const steps: Step[] = [
 ];
 const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
 const cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const showtime: Showtime = {
-  id_cinema: 1,
-  cinema_name: "DCINE Bến Thành",
-  film_name: "The Batman",
-  address: "Số 6, Mạc Đĩnh Chi, Q.1, Tp. Hồ Chí Minh",
-  id_room: 1,
-  sub: "2D Phụ Đề Việt",
-  schedule_start: ["2:45", "3:45", "4:45", "23:45", "1:45", "5:45"],
-  day: "14/04/2024",
-};
-// 5 minutes for timer
 const fetcher = async (url: string) => {
   const res = await axios.get(url, {
     headers: {
@@ -65,18 +59,26 @@ export default function Page({
     id: number;
   };
 }) {
-  const { data, error } = useSWR<SuatChieuType>(
+  const { data: session } = useSession();
+
+  const { data, error, isLoading } = useSWR<SuatChieuType>(
     `http://localhost:8080/api/suatChieu/${params.id}`,
     fetcher
   );
   const [Ghes, setGhes] = useState<GheType[] | null>(null);
   const [selectedGheIds, setSelectedGheIds] = useState<number[]>([]);
+  const [reservedGheIds, setReservedGheIds] = useState<VeType[] | null>(null);
   useEffect(() => {
-    const roomID = data?.phong.idPhong; // replace with your room ID
-    fetchSeatByRoomID(roomID||0)
-      .then((data) => setGhes(data))
-      .catch((error) => console.error(error));
-  }, [data]);
+    if (!isLoading && data) {
+      const roomID = data?.phong.idPhong; // replace with your room ID
+      fetchReservedGheBySuatChieuId(data?.idSuatChieu || -1)
+        .then((data) => setReservedGheIds(data))
+        .catch((error) => console.error(error));
+      fetchSeatByRoomID(roomID || 0)
+        .then((data) => setGhes(data))
+        .catch((error) => console.error(error));
+    }
+  }, [data, isLoading]);
   let timeout: NodeJS.Timeout;
   const COUNTDOWN_AMOUNT_TOTAL = 5 * 60;
   const timerRef = useRef<HTMLDivElement>(null);
@@ -109,18 +111,23 @@ export default function Page({
     try {
       const orderInfo = JSON.stringify({
         tong: totalCost,
+        suatchieu: data?.idSuatChieu,
         rap: data?.phong.rap.tenRap,
         diachi: data?.phong.rap.diaChi,
-        phong : data?.phong.idPhong,
         selectedGheIds: selectedGheIds,
+        phong: data?.phong.idPhong,
+        // @ts-ignore
+        username: session?.user?.username,
       });
       console.log(orderInfo);
       const VNPayLink = await getVNpayLink({
         amount: totalCost,
         orderInfo: orderInfo,
+        // @ts-ignore
+        token: session?.user?.accessToken,
       });
-      router.push(VNPayLink);
       console.log(VNPayLink);
+      // router.push(VNPayLink);
       // if (!response.ok) {
       //   throw new Error('VNPay API request failed');
       // }
@@ -133,9 +140,17 @@ export default function Page({
       console.error(error);
     }
   };
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
+  if (!session) {
+    return <div>Unauthorized</div>;
+  }
+
   const ticketCost = numTogglesOn * (data?.gia ?? 0);
   const extraCost = numTogglesOn * 5000;
   const totalCost = ticketCost + extraCost;
+  console.log(Ghes);
+  console.log(reservedGheIds?.map((ve: VeType) => console.log(ve.ghe.idGhe)));
   return (
     <div>
       <div className="flex justify-center items-center gap-10 my-2">
@@ -211,7 +226,6 @@ export default function Page({
                                 );
                                 newToggleStates[rowIndex][index] =
                                   !newToggleStates[rowIndex][index];
-                                console.log(Ghes);
                                 setToggleStates(newToggleStates);
                                 let newNumTogglesOn = pressed
                                   ? prevNumTogglesOn + 1
@@ -234,8 +248,11 @@ export default function Page({
                               });
                             }}
                             disabled={
-                              numTogglesOn === 4 &&
-                              toggleStates[rowIndex][index] === false
+                              reservedGheIds?.some(
+                                (ve: VeType) => ve.ghe.idGhe === ghe.idGhe
+                              ) ||
+                              (numTogglesOn === 4 &&
+                                toggleStates[rowIndex][index] === false)
                                 ? true
                                 : false
                             }

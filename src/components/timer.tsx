@@ -1,5 +1,5 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
-import { AlertDialogDemo } from "./alert-dialog";
+import {forwardRef, useEffect, useRef, useState} from "react";
+import {AlertDialogDemo} from "./alert-dialog";
 
 type TimerProps = {
   currentStep: number;

@@ -1,8 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
-import { GheType, Movie, PhimType } from "../../types";
-import fs from "fs";
-import path from "path";
+import {
+  AdminType,
+  GheType,
+  HoaDonType,
+  KhachHangType,
+  Movie,
+  PhimType,
+  VeType,
+} from "../../types";
+import { encodePng } from "next/dist/server/lib/squoosh/impl";
+import { time } from "console";
 
 const API_KEY: string = process.env.NEXT_PUBLIC_API_KEY ?? "";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -42,6 +50,7 @@ export const fetchTrendingMovies = async (page: number): Promise<Movie[]> => {
 type orderInfo = {
   amount: number;
   orderInfo: string;
+  token: string;
 };
 export async function fetchMovieDetails(id: number): Promise<PhimType> {
   // console.log("test3 " + process.env.NEXT_PUBLIC_API_KEY);
@@ -76,6 +85,25 @@ export async function fetchSeatByRoomID(id: number): Promise<GheType[]> {
   return data;
 }
 
+export async function fetchReservedGheBySuatChieuId(
+  id: number
+): Promise<VeType[]> {
+  const options = {
+    headers: {
+      accept: "application/json",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4",
+    },
+    timeout: 5000,
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/ve/idSuatChieu/${id}`,
+    options
+  );
+  const data = res.data;
+  return data;
+}
+
 export const getMovies = async (query: string) => {
   const res = await fetch(
     `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`
@@ -90,73 +118,62 @@ export const getSimilarMovies = async (id: number) => {
   return data.results;
 };
 
-export const getVNpayLink = async ({ amount, orderInfo }: orderInfo) => {
+export const getVNpayLink = async ({ amount, orderInfo, token }: orderInfo) => {
+  console.log(token);
   const options = {
+    authorization: `Bearer ${token}`,
     params: {
       amount,
-      orderInfo,
+      orderInfo: encodeURIComponent(JSON.stringify(orderInfo)),
     },
     timeout: 5000,
   };
-  const res = await axios.get("http://127.0.0.1:8080/api/submitOrder", options);
+  const res = await axios.get(
+    "http://localhost:8080/api/checkout/submitOrder",
+    options
+  );
   return res.data;
 };
 
-// export const fetchDataJson = async (): Promise<any[]> => {
-//   const options = {
-//     headers: {
-//       accept: "application/json",
-//       Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4`,
-//     },
-//   };
+export const fetchAdmins = async (token: string): Promise<AdminType[]> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.get(`http://localhost:8080/api/auth/admin`, options);
+  return res.data;
+};
 
-//   const data = fs.readFileSync(path.resolve("res.json"), "utf-8");
-//   const movies = JSON.parse(data);
-
-//   const ids: number[] = [
-//     ...new Set<number>(movies.map((movie: { id: number }) => movie.id)),
-//   ];
-
-//   const movieDataPromises = ids.map(async (id: number) => {
-//     const res = await axios.get(
-//       `https://api.themoviedb.org/3/movie/${id}?language=vi-vie`,
-//       options
-//     );
-//     return res.data;
-//   });
-
-//   const movieData = await Promise.all(movieDataPromises);
-
-// fs.writeFile("res1.json", JSON.stringify(movieData), (err) => {
-//   if (err) {
-//     console.error(err);
-//     return;
-//   }
-//   console.log("File has been created");
-// });
-
-//   // console.log(movieData);
-
-//   return ids;
-
-//   // console.log(json);
-//   return ids;
-// };
+export const fetchAdmin = async (
+  token: string,
+  id: number
+): Promise<AdminType> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/auth/admin/${id}`,
+    options
+  );
+  return res.data;
+};
 
 export const fetchGenres = async (): Promise<any[]> => {
   const options = {
     headers: {
       accept: "application/json",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4`,
+      // Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4`,
     },
   };
 
-  const res = await axios.get(
-    `https://api.themoviedb.org/3/genre/movie/list?language=vi`,
-    options
-  );
+  const res = await axios.get(`http://localhost:8080/api/theLoai`, options);
 
-  const data = res.data.genres;
+  const data = res.data;
   return data;
 };
 function useSWR(
@@ -165,3 +182,62 @@ function useSWR(
 ): { data: any; error: any } {
   throw new Error("Function not implemented.");
 }
+
+export const fetchPhim = async (): Promise<PhimType[]> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      // Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YjA4OWZmOWJjY2NlYWMwNDg4ZWVmN2MxYjM0YjBlNSIsInN1YiI6IjY2MGVhMzNlOWRlZTU4MDEzMTA5MWEyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.QI640_F_1EqSLMYriTU5I5nmkTTENrQrm-i0sSJG5T4`,
+    },
+  };
+
+  const res = await axios.get(`http://localhost:8080/api/phim`, options);
+
+  const data = res.data;
+
+  return data;
+};
+
+export const fetchUser = async (token: string): Promise<KhachHangType[]> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      // Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/auth/khachHang`,
+    options
+  );
+  return res.data;
+};
+
+export const fetchBill = async (id: number): Promise<HoaDonType> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      // Authorization: `Bearer ${token}`,
+    },
+    timeout: 5000,
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/hoaDon/${id}`,
+    options
+  );
+  return res.data;
+};
+
+export const fetchVe = async (idHoaDon: number): Promise<VeType[]> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      // Authorization: `Bearer ${token}`,
+    },
+    timeout: 5000,
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/ve/idHoaDon/${idHoaDon}`,
+    options
+  );
+  return res.data;
+};

@@ -1,8 +1,9 @@
 import React from "react";
-import { Movie, PhimType } from "../../../types";
+import {PhimType} from "../../../types";
 import Link from "next/link";
 import Image from "next/image";
-import { Card } from "../ui/card";
+import {Card} from "../ui/card";
+
 export default function MovieCard({ movie }: { movie: PhimType }) {
   const IMG_BASE_URL: String | undefined =
     process.env.NEXT_PUBLIC_IMAGE_BASE_URL;

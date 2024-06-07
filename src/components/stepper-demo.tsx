@@ -1,8 +1,8 @@
 "use client";
-import { Button } from "./ui/button";
-import { Step, StepItem, Stepper, useStepper } from "./ui/stepper";
-import { toast } from "./ui/use-toast";
-import { LayoutGridIcon, ShoppingBag, CreditCard, Inbox } from "lucide-react";
+import {Button} from "./ui/button";
+import {Step, StepItem, Stepper, useStepper} from "./ui/stepper";
+import {CreditCard, Inbox, LayoutGridIcon, ShoppingBag} from "lucide-react";
+
 const steps = [
   { label: "Chọn ghế", icon: LayoutGridIcon },
   { label: "Bắp nước", icon: ShoppingBag },

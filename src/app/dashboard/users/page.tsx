@@ -1,14 +1,16 @@
-import { deleteUser } from "@/lib/actions";
-import { fetchUsers } from "@/lib/data";
-import Pagination from "@/components/dashboard/pagination/pagination";
 import Search from "@/components/dashboard/search/search";
 import styles from "@/components/dashboard/users/users.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { User, Kh } from "../../../../types";
+import { Kh, User } from "../../../../types";
+import { getSession } from "next-auth/react";
+import { fetchUser } from "@/lib/request";
+import { Button } from "@/components/ui/button";
+
 const UsersPage = async ({ searchParams }: { searchParams: any }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
+  // const session = await getSession();
   // const { count, users } = await fetchUsers(q, page);
   const khData: Kh[] = [
     {
@@ -68,6 +70,9 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
     },
     // Add more users as needed
   ];
+  // console.log(session);
+  const khachHang = await fetchUser("");
+  console.log(khachHang);
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -81,12 +86,13 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
           <tr>
             <td>Name</td>
             <td>Email</td>
+            <td>Gioi Tinh</td>
             <td>Action</td>
           </tr>
         </thead>
         <tbody>
-          {khData.map((kh) => (
-            <tr key={kh.id_kh}>
+          {khachHang.map((khachHang) => (
+            <tr key={khachHang.id_kh}>
               <td>
                 <div className={styles.user}>
                   <Image
@@ -96,23 +102,20 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
                     height={40}
                     className={styles.userImage}
                   />
-                  {kh.ten}
+                  {khachHang.ten}
                 </div>
               </td>
-              <td>{kh.account.email}</td>
+              <td>{khachHang.cccd}</td>
+              <td>{khachHang.gioiTinh}</td>
               {/* <td>{user.createdAt?.toString().slice(4, 16)}</td> */}
               <td>
                 <div className={styles.buttons}>
-                  <Link href={`/admin/users/${kh.id_kh}`}>
-                    <button className={`${styles.button} ${styles.view}`}>
-                      View
-                    </button>
+                  <Link href={`/dashboard/users/${khachHang.id_kh}`}>
+                    <Button className="bg-green-500">View</Button>
                   </Link>
                   <form action={""}>
-                    <input type="hidden" name="id" value={kh.id_kh} />
-                    <button className={`${styles.button} ${styles.delete}`}>
-                      Delete
-                    </button>
+                    <input type="hidden" name="id" value={khachHang.id_kh} />
+                    <Button className="bg-red-600">Delete</Button>
                   </form>
                 </div>
               </td>
