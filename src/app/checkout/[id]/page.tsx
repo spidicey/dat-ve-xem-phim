@@ -34,8 +34,8 @@ const steps: Step[] = [
   { icon: <CreditCard size={34} />, label: "Thanh toán" },
   { icon: <Inbox size={34} />, label: "Thông tin vé" },
 ];
-const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
-const cols = [1, 2, 3, 4, 5, 6, 7, 8];
+const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+const cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const showtime: Showtime = {
   id_cinema: 1,
   cinema_name: "DCINE Bến Thành",
@@ -70,9 +70,10 @@ export default function Page({
     fetcher
   );
   const [Ghes, setGhes] = useState<GheType[] | null>(null);
+  const [selectedGheIds, setSelectedGheIds] = useState<number[]>([]);
   useEffect(() => {
     const roomID = data?.phong.idPhong; // replace with your room ID
-    fetchSeatByRoomID(roomID || 1)
+    fetchSeatByRoomID(roomID||0)
       .then((data) => setGhes(data))
       .catch((error) => console.error(error));
   }, [data]);
@@ -83,7 +84,7 @@ export default function Page({
   const [previousStep, setPreviousStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [toggleStates, setToggleStates] = useState(
-    Array(rows.length * cols.length).fill(false)
+    Array.from({ length: 9 }, () => Array(10).fill(false))
   );
   const [paymentOption, setPaymentOption] = useState<string>("vnpay");
   const delta = currentStep - previousStep;
@@ -106,9 +107,17 @@ export default function Page({
   const router = useRouter();
   const handleSutmit = async () => {
     try {
+      const orderInfo = JSON.stringify({
+        tong: totalCost,
+        rap: data?.phong.rap.tenRap,
+        diachi: data?.phong.rap.diaChi,
+        phong : data?.phong.idPhong,
+        selectedGheIds: selectedGheIds,
+      });
+      console.log(orderInfo);
       const VNPayLink = await getVNpayLink({
-        amount: numTogglesOn * 50000,
-        orderInfo: "asd",
+        amount: totalCost,
+        orderInfo: orderInfo,
       });
       router.push(VNPayLink);
       console.log(VNPayLink);
@@ -124,7 +133,9 @@ export default function Page({
       console.error(error);
     }
   };
-
+  const ticketCost = numTogglesOn * (data?.gia ?? 0);
+  const extraCost = numTogglesOn * 5000;
+  const totalCost = ticketCost + extraCost;
   return (
     <div>
       <div className="flex justify-center items-center gap-10 my-2">
@@ -177,50 +188,62 @@ export default function Page({
                     </Toggle>
                   ))}
                 </div>
-                <div className="flex ">
-                  {cols.map((col, index) => (
-                    <div
-                      key={index}
-                      className="table-cell mx-2 flex-col justify-center w-10 items-center"
-                    >
-                      {rows.map((row, index) => (
-                        <Toggle
+                <div className="flex flex-wrap">
+                  {Ghes?.reduce((rows, ghe, index) => {
+                    if (index % 10 === 0) {
+                      rows.push([]);
+                    }
+                    rows[rows.length - 1].push(ghe);
+                    return rows;
+                  }, [] as GheType[][]).map((row, rowIndex) => (
+                    <div key={rowIndex} className="flex w-full">
+                      {row.map((ghe, index) => (
+                        <div
                           key={index}
-                          className={`bg-slate-200  data-[state=on]:bg-green-500  border-slate-300 text-center border w-10  my-2`}
-                          onPressedChange={(pressed) => {
-                            setNumTogglesOn((prevNumTogglesOn) => {
-                              const newToggleStates = [...toggleStates];
-                              newToggleStates[
-                                rows.indexOf(row) * cols.length + col - 1
-                              ] =
-                                !newToggleStates[
-                                  rows.indexOf(row) * cols.length + col - 1
-                                ];
-                              setToggleStates(newToggleStates);
-                              let newNumTogglesOn = pressed
-                                ? prevNumTogglesOn + 1
-                                : prevNumTogglesOn - 1;
-
-                              return newNumTogglesOn;
-                            });
-                          }}
-                          disabled={
-                            numTogglesOn === 4 &&
-                            toggleStates[
-                              rows.indexOf(row) * cols.length + col - 1
-                            ] === false
-                              ? true
-                              : false
-                          }
-                          defaultPressed={
-                            toggleStates[
-                              rows.indexOf(row) * cols.length + col - 1
-                            ]
-                          }
+                          className="table-cell mx-2 flex-col justify-center w-10 items-center"
                         >
-                          {`${row}${col}`}
-                        </Toggle>
-                        // </div>
+                          <Toggle
+                            className={`bg-slate-200  data-[state=on]:bg-green-500  border-slate-300 text-center border w-10  my-2`}
+                            onPressedChange={(pressed) => {
+                              setNumTogglesOn((prevNumTogglesOn) => {
+                                const newToggleStates = toggleStates.map(
+                                  (row) => [...row]
+                                );
+                                newToggleStates[rowIndex][index] =
+                                  !newToggleStates[rowIndex][index];
+                                console.log(Ghes);
+                                setToggleStates(newToggleStates);
+                                let newNumTogglesOn = pressed
+                                  ? prevNumTogglesOn + 1
+                                  : prevNumTogglesOn - 1;
+                                setSelectedGheIds((prevSelectedGheIds) => {
+                                  if (pressed) {
+                                    if (
+                                      !prevSelectedGheIds.includes(ghe.idGhe)
+                                    ) {
+                                      return [...prevSelectedGheIds, ghe.idGhe];
+                                    }
+                                  } else {
+                                    return prevSelectedGheIds.filter(
+                                      (id) => id !== ghe.idGhe
+                                    );
+                                  }
+                                  return prevSelectedGheIds;
+                                });
+                                return newNumTogglesOn;
+                              });
+                            }}
+                            disabled={
+                              numTogglesOn === 4 &&
+                              toggleStates[rowIndex][index] === false
+                                ? true
+                                : false
+                            }
+                            defaultPressed={toggleStates[rowIndex][index]}
+                          >
+                            {`${ghe.hangGhe}${ghe.soGhe}`}
+                          </Toggle>
+                        </div>
                       ))}
                     </div>
                   ))}
@@ -254,7 +277,7 @@ export default function Page({
                       Tổng đơn hàng
                     </h6>
                     <span className="h2 mb-0 ticketing-total-amount font-bold text-black text-lg">
-                      {numTogglesOn * 50000} đ
+                      {numTogglesOn * (data?.gia ?? 0)} đ
                     </span>
                   </div>
                 </div>
@@ -296,19 +319,19 @@ export default function Page({
                     <tbody>
                       <tr className="border-b-2">
                         <td>Standard</td>
-                        <td className="text-center">1</td>
-                        <td className="text-right">95,000 đ</td>
+                        <td className="text-center">{numTogglesOn}</td>
+                        <td className="text-right">{ticketCost}đ</td>
                       </tr>
                       <tr className="border-b-2">
                         <td>Phí tiện ích</td>
                         <td className="text-center"></td>
-                        <td className="text-right">5,000 đ</td>
+                        <td className="text-right">{extraCost} đ</td>
                       </tr>
                       <tr className="border-b-2">
                         <td colSpan={2} className="text-left">
                           Tổng
                         </td>
-                        <td className="text-right">100,000 đ</td>
+                        <td className="text-right">{totalCost} đ</td>
                       </tr>
                     </tbody>
                   </table>
@@ -347,7 +370,7 @@ export default function Page({
                       Tổng đơn hàng
                     </h6>
                     <span className="h2 mb-0 ticketing-total-amount font-bold text-black text-lg">
-                      100,000 đ
+                      {totalCost} đ
                     </span>
                   </div>
                   <div className="col text-right border-left ticketing-countdown-timer">
