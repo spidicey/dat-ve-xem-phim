@@ -104,6 +104,7 @@ const SingleUserPage = ({ params }: { params: any }) => {
       <Alert>
         <Terminal className="h-4 w-4" />
         <AlertTitle>Thêm thanh công !</AlertTitle>
+
       </Alert>;
     }
     console.log(response);

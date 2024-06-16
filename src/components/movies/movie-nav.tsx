@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import {useParams, usePathname} from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 
@@ -17,12 +17,7 @@ export default function MovieNav() {
     {
       label: "schedule",
       title: "Lịch chiếu",
-      href: `/movie/${params.id}/schedule`,
-    },
-    {
-      label: "ticket",
-      title: "Mua vé",
-      href: `/movie/${params.id}/ticket`,
+      href: `/movie/${params?.id}/schedule`,
     },
   ];
   return (

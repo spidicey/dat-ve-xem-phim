@@ -7,9 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { Label } from "@/components/ui/label";
 
 const SingleUserPage = ({ params }: { params: any }) => {
   const { data: session } = useSession();
+  const [status, setStatus] = useState<number | null>(null);
+
   // @ts-ignore
   const token = session?.user.accessToken;
   //   const user = await fetchUser(id);
@@ -124,6 +128,13 @@ const SingleUserPage = ({ params }: { params: any }) => {
           )}
 
           <Button>Thêm</Button>
+          {status && (
+            <Label
+              className={status === 200 ? "text-green-500" : "text-red-500"}
+            >
+              {status === 200 ? "Success" : "Fail"}
+            </Label>
+          )}
         </form>
       </div>
     </div>

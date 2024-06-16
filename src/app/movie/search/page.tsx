@@ -47,6 +47,7 @@ export default function Page({
 
   return (
     <>
+        <Header />
       <div className="grid grid-cols-4 gap-4 mt-4">
         <Suspense fallback={<div>Loading...</div>}>
           {data.map((movie: PhimType) => (

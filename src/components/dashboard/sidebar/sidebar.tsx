@@ -1,16 +1,16 @@
 import Image from "next/image";
 import MenuLink from "./menuLink/menuLink";
 import {
-    MdAttachMoney,
-    MdHelpCenter,
-    MdLogout,
-    MdMovie,
-    MdOutlineAdminPanelSettings,
-    MdOutlineSettings,
-    MdSupervisedUserCircle,
-    MdWork,
+  MdAttachMoney,
+  MdHelpCenter,
+  MdLogout,
+  MdMovie,
+  MdOutlineAdminPanelSettings,
+  MdOutlineSettings,
+  MdSupervisedUserCircle,
+  MdWork,
 } from "react-icons/md";
-import { signOut } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 // import { auth, signOut } from "@/app/auth";
 
 const menuItems = [
@@ -39,38 +39,12 @@ const menuItems = [
       },
     ],
   },
-  {
-    title: "Thống kê",
-    list: [
-      {
-        title: "Lợi nhuận",
-        path: "/dashboard/revenue",
-        icon: <MdWork />,
-      },
-    ],
-  },
-  {
-    title: "User",
-    list: [
-      {
-        title: "Settings",
-        path: "/dashboard/settings",
-        icon: <MdOutlineSettings />,
-      },
-      {
-        title: "Help",
-        path: "/dashboard/help",
-        icon: <MdHelpCenter />,
-      },
-    ],
-  },
 ];
 
 const Sidebar = async () => {
-  // const { user } = await auth();
-  // const session = await getSession();
-  // // @ts-ignore
-  // console.log(session);
+  const session = await getSession();
+  // @ts-ignore
+  console.log(session);
   // //@ts-ignore
   // if (session?.user?.role !== "admin") {
   //   return <div>ko co quyen</div>;
@@ -89,7 +63,8 @@ const Sidebar = async () => {
           height="50"
         />
         <div className="flex flex-col">
-          <span className="font-medium">{"asdasd"}</span>
+          {/* @ts-ignore */}
+          <span className="font-medium">{session?.user.username}</span>
           <span className="text-xs text-[var(--textSoft)]">Administrator</span>
         </div>
       </div>
@@ -105,10 +80,13 @@ const Sidebar = async () => {
           </li>
         ))}
       </ul>
-        <button onClick={() => signOut()} className="flex items-center space-x-2 py-5 my-1 w-full text-white rounded-lg bg-none border-none cursor-pointer hover:bg-[#2e374a]">
-          <MdLogout />
-          Logout
-        </button>
+      <button
+        onClick={() => signOut()}
+        className="flex items-center space-x-2 py-5 my-1 w-full text-white rounded-lg bg-none border-none cursor-pointer hover:bg-[#2e374a]"
+      >
+        <MdLogout />
+        Logout
+      </button>
     </div>
   );
 };

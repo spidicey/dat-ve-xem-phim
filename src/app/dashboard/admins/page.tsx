@@ -59,10 +59,10 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
                   <Link href={`/dashboard/admins/${admin.id_admin}`}>
                     <Button className="bg-green-500">View</Button>
                   </Link>
-                  <form action={""}>
+                  {/* <form action={""}>
                     <input type="hidden" name="id" value={admin.id_admin} />
                     <Button className="bg-red-600">Delete</Button>
-                  </form>
+                  </form> */}
                 </div>
               </td>
             </tr>

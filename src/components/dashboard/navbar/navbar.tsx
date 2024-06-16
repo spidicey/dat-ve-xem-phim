@@ -12,12 +12,12 @@ const Navbar = () => {
       </div>
       <div className="flex items-center space-x-5">
         <div className="flex items-center space-x-2 bg-slate-700 p-2 rounded-lg text-white">
-          <MdSearch />
+          {/* <MdSearch />
           <input
             type="text"
             placeholder="Search..."
             className="bg-transparent border-none text-[var(--text)] outline-none"
-          />
+          /> */}
         </div>
         <div className="flex space-x-5">
           <MdOutlineChat size={20} />

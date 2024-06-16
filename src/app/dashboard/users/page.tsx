@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Kh, User } from "../../../../types";
 import { getSession } from "next-auth/react";
-import { fetchUser } from "@/lib/request";
+import { fetchUsers } from "@/lib/request";
 import { Button } from "@/components/ui/button";
 
 const UsersPage = async ({ searchParams }: { searchParams: any }) => {
@@ -12,66 +12,8 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
   const page = searchParams?.page || 1;
   // const session = await getSession();
   // const { count, users } = await fetchUsers(q, page);
-  const khData: Kh[] = [
-    {
-      id_kh: 1,
-      cccd: "123456789",
-      ten: "John Doe",
-      diachi: "123 Main St",
-      gioitinh: "Male",
-      account: {
-        id_acc: 1,
-        tk: "johndoe",
-        mk: "password",
-        email: "john.doe@example.com",
-        role: "User",
-      },
-    },
-    {
-      id_kh: 2,
-      cccd: "987654321",
-      ten: "Jane Smith",
-      diachi: "456 Elm St",
-      gioitinh: "Female",
-      account: {
-        id_acc: 2,
-        tk: "janesmith",
-        mk: "password",
-        email: "jane.smith@example.com",
-        role: "Admin",
-      },
-    },
-    // Add more Kh objects as needed
-  ];
-  const users: User[] = [
-    {
-      id: 1,
-      img: "/path/to/image.jpg",
-      name: "John Doe",
-      username: "johndoe",
-      email: "john.doe@example.com",
-      createdAt: new Date(),
-      isAdmin: true,
-      isActive: true,
-      role: "Admin",
-      action: "Edit",
-    },
-    {
-      id: 2,
-      img: "/path/to/image.jpg",
-      name: "Jane Doe",
-      username: "janedoe",
-      email: "jane.doe@example.com",
-      createdAt: new Date(),
-      isAdmin: false,
-      isActive: false,
-      role: "User",
-      action: "Edit",
-    },
-    // Add more users as needed
-  ];
   // console.log(session);
-  const khachHang = await fetchUser("");
+  const khachHang = await fetchUsers("");
   console.log(khachHang);
   return (
     <div className={styles.container}>
@@ -113,10 +55,10 @@ const UsersPage = async ({ searchParams }: { searchParams: any }) => {
                   <Link href={`/dashboard/users/${khachHang.id_kh}`}>
                     <Button className="bg-green-500">View</Button>
                   </Link>
-                  <form action={""}>
+                  {/* <form action={""}>
                     <input type="hidden" name="id" value={khachHang.id_kh} />
                     <Button className="bg-red-600">Delete</Button>
-                  </form>
+                  </form> */}
                 </div>
               </td>
             </tr>

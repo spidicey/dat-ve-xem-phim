@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
 import {
+  Account,
   AdminType,
   GheType,
   HoaDonType,
@@ -9,8 +10,6 @@ import {
   PhimType,
   VeType,
 } from "../../types";
-import { encodePng } from "next/dist/server/lib/squoosh/impl";
-import { time } from "console";
 
 const API_KEY: string = process.env.NEXT_PUBLIC_API_KEY ?? "";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -163,6 +162,36 @@ export const fetchAdmin = async (
   return res.data;
 };
 
+export const fetchUser = async (
+  token: string,
+  id: number
+): Promise<KhachHangType> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/auth/khachHang/${id}`,
+    options
+  );
+  return res.data;
+};
+
+export const fetchBills = async (username: number): Promise<HoaDonType[]> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+    },
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/hoaDon/username/${username}`,
+    options
+  );
+  return res.data;
+};
+
 export const fetchGenres = async (): Promise<any[]> => {
   const options = {
     headers: {
@@ -198,7 +227,21 @@ export const fetchPhim = async (): Promise<PhimType[]> => {
   return data;
 };
 
-export const fetchUser = async (token: string): Promise<KhachHangType[]> => {
+export const fetchProfile = async (username: string): Promise<KhachHangType> => {
+  const options = {
+    headers: {
+      accept: "application/json",
+      // Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.get(
+    `http://localhost:8080/api/auth/khachHang/username/${username}`,
+    options
+  );
+  return res.data;
+};
+
+export const fetchUsers = async (token: string): Promise<KhachHangType[]> => {
   const options = {
     headers: {
       accept: "application/json",

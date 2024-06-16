@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 type Step = {
   icon: React.ReactNode | any;
@@ -127,7 +128,7 @@ export default function Page({
         token: session?.user?.accessToken,
       });
       console.log(VNPayLink);
-      // router.push(VNPayLink);
+      router.push(VNPayLink);
       // if (!response.ok) {
       //   throw new Error('VNPay API request failed');
       // }
@@ -143,7 +144,11 @@ export default function Page({
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
   if (!session) {
-    return <div>Unauthorized</div>;
+    return (
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
+        <h1>Bạn cần đăng nhập để đặt vé</h1>
+      </div>
+    );
   }
 
   const ticketCost = numTogglesOn * (data?.gia ?? 0);

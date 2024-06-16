@@ -15,7 +15,7 @@ export default async function Page() {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder="Search for a user..." />
+        {/* <Search placeholder="Search for a user..." /> */}
         <Link href="/dashboard/movie/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
@@ -49,10 +49,10 @@ export default async function Page() {
                   <Link href={`/dashboard/movie/${movie.id}`}>
                     <Button className="bg-green-500">View</Button>
                   </Link>
-                  <form action={""}>
+                  {/* <form action={""}>
                     <input type="hidden" name="id" value={movie.id} />
                     <Button className="bg-red-600">Delete</Button>
-                  </form>
+                  </form> */}
                 </div>
               </td>
             </tr>

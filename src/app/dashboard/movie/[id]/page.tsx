@@ -1,19 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { fetchMovieDetails, fetchGenres } from "@/lib/request";
-import { Plus, Trash } from "lucide-react";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,59 +11,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Movie,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { fetchGenres, fetchMovieDetails } from "@/lib/request";
+import axios from "axios";
+import { Plus, Trash } from "lucide-react";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import useSWR from "swr";
+import {
   PhimType,
   SuatChieuType,
+  TheLoai,
   TheLoaiType,
 } from "../../../../../types";
-import MovieNav from "@/components/movies/movie-nav";
-import MovieShowtime from "@/components/showtime";
-import useSWR from "swr";
-import axios from "axios";
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import Link from "next/link";
 
 export default function page({ params }: { params: any }) {
   const fetcher = async (url: string) => {
@@ -91,17 +48,42 @@ export default function page({ params }: { params: any }) {
     });
     return res.data;
   };
+
   const { id } = params;
   // @ts-ignore
   const [movie, setMovie] = useState<PhimType>(null);
   const [genres, setGenres] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-  console.log(id);
   const { data, error } = useSWR<SuatChieuType[]>(
     `http://localhost:8080/api/suatChieu/phim/${id}`,
     fetcher
   );
-  console.log(data);
+  const MovieSchema = z.object({
+    anh: z.string(),
+    ten: z.string(),
+    quocGia: z.string(),
+    namPhatHanh: z.string(),
+    trangThai: z.string(),
+    thoiLuong: z.string(),
+    moTa: z.string(),
+    doTuoi: z.boolean(),
+    theLoais: z.array(TheLoai).optional(),
+  });
+  type TMovieSchema = z.infer<typeof MovieSchema>;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setValue,
+    getValues,
+    control,
+  } = useForm<TMovieSchema>({
+    resolver: zodResolver(MovieSchema),
+    defaultValues: {
+      thoiLuong: "", // provide a default value
+    },
+  });
   useEffect(() => {
     const fetchMovie = async () => {
       const movieData = await fetchMovieDetails(id);
@@ -134,6 +116,23 @@ export default function page({ params }: { params: any }) {
       }
     });
   };
+  const onSubmit = async (data: TMovieSchema) => {
+    console.log(data);
+    // const parsedData = {
+    //   ...data,
+    //   theLoais: genreToAdd,
+    // };
+    // const response = await fetch("http://localhost:8080/api/phim", {
+    //   method: "POST",
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     // @ts-ignore
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+    // console.log(response);
+  };
   const IMG_BASE_URL: String | undefined =
     process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
   const [open, setOpen] = React.useState(false);
@@ -150,14 +149,16 @@ export default function page({ params }: { params: any }) {
           height={448}
         ></Image>
         <div className="ml-4">
-          <form action="">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <input
               className="w-full text-3xl font-bold"
+              {...register("ten")}
               defaultValue={movie.ten}
             />
             <div className="my-3 flex gap-0">
               <input
                 className="bg-red-600 py-1 px-2 text-white mr-2 rounded"
+                {...register("namPhatHanh")}
                 defaultValue={
                   movie.namPhatHanh
                     ? new Date(movie.namPhatHanh).toISOString().split("T")[0]
@@ -167,10 +168,12 @@ export default function page({ params }: { params: any }) {
               <input
                 className="bg-red-600 py-1 px-2 text-white mr-2 rounded"
                 defaultValue={movie.quocGia}
+                {...register("quocGia")}
               />
               <input
                 className="bg-red-600 py-1 px-2 text-white mr-2 rounded"
                 defaultValue={movie.trangThai}
+                {...register("trangThai")}
               />
             </div>
             <div className="flex w-full flex-col items-start justify-between rounded-md border my-3 px-4 py-3 sm:flex-row sm:items-center">
@@ -244,9 +247,15 @@ export default function page({ params }: { params: any }) {
                 "Hiện chưa có mô tả"
               )}
             </div>
+            <Button type="submit" className="mt-4">
+              Lưu
+            </Button>
           </form>
         </div>
       </div>
+      <Link href={`/dashboard/movie/${id}/add`}>
+        <Button className="mt-4">Thêm Suất Chiếu</Button>
+      </Link>
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader className="bg-primary">
