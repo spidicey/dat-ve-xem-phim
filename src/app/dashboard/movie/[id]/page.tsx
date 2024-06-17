@@ -142,12 +142,7 @@ export default function page({ params }: { params: any }) {
   return (
     <div className="flex-grow p-6 md:overflow-y-auto">
       <div className="flex flex-grow ">
-        <Image
-          src={`${IMG_BASE_URL}` + movie.anh}
-          alt="poster"
-          width={300}
-          height={448}
-        ></Image>
+        <Image src={movie.anh} alt="poster" width={300} height={448}></Image>
         <div className="ml-4">
           <form onSubmit={handleSubmit(onSubmit)}>
             <input

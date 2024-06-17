@@ -1,10 +1,10 @@
 import Search from "@/components/dashboard/search/search";
 import styles from "@/components/dashboard/users/users.module.css";
-import { fetchAdmins, fetchPhim } from "@/lib/request";
+import { Button } from "@/components/ui/button";
+import { fetchPhim } from "@/lib/request";
 import Image from "next/image";
 import Link from "next/link";
 import { PhimType } from "../../../../types";
-import { Button } from "@/components/ui/button";
 
 export default async function Page() {
   const phim: PhimType[] = await fetchPhim();
@@ -34,7 +34,7 @@ export default async function Page() {
               <td>
                 <div className={styles.user}>
                   <Image
-                    src={`${IMG_BASE_URL}` + movie.anh}
+                    src={movie.anh}
                     alt="poster"
                     width={500}
                     height={500}

@@ -110,7 +110,7 @@ export const Ghe = z.object({
 });
 export const Phim = z.object({
   id: z.number(),
-  anh: z.string().optional(),
+  anh: z.string(),
   ten: z.string(),
   quocGia: z.string().optional(),
   namPhatHanh: z.date().optional(),

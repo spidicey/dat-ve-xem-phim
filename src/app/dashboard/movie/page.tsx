@@ -34,7 +34,7 @@ export default async function Page() {
               <td>
                 <div className={styles.user}>
                   <Image
-                    src={`${IMG_BASE_URL}` + movie.anh}
+                    src={movie.anh}
                     alt="poster"
                     width={500}
                     height={500}

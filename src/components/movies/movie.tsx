@@ -1,18 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import {PhimType, TheLoaiType} from "../../../types";
+import { PhimType, TheLoaiType } from "../../../types";
 
 export default function MovieComponent({ movie }: { movie: PhimType }) {
   const IMG_BASE_URL: String | undefined =
     process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
   return (
     <div className="flex flex-grow ">
-      <Image
-        src={`${IMG_BASE_URL}` + movie.anh}
-        alt="poster"
-        width={200}
-        height={448}
-      ></Image>
+      <Image src={movie.anh} alt="poster" width={200} height={448}></Image>
       <div className="ml-4">
         <h1 className="text-3xl font-bold">{movie.ten}</h1>
         <div className="my-3 flex gap-0">

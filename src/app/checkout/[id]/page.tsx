@@ -1,29 +1,28 @@
 "use client";
+import { MoMo, Vnpay } from "@/components/logo";
+import PaymentOption from "@/components/payment-option";
+import Timer from "@/components/timer";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { RadioGroup } from "@/components/ui/radio-group";
+import { Toggle } from "@/components/ui/toggle";
+import {
+  fetchReservedGheBySuatChieuId,
+  fetchSeatByRoomID,
+  getVNpayLink,
+} from "@/lib/request";
+import axios from "axios";
 import {
   ChevronRightIcon,
   CreditCard,
   Inbox,
   LayoutGridIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import React, { useEffect, useRef, useState } from "react";
-import { Toggle } from "@/components/ui/toggle";
-import { Card } from "@/components/ui/card";
-import { GheType, Showtime, SuatChieuType, VeType } from "../../../../types";
-import { RadioGroup } from "@/components/ui/radio-group";
-import { MoMo, Vnpay } from "@/components/logo";
-import PaymentOption from "@/components/payment-option";
-import Timer from "@/components/timer";
-import {
-  fetchReservedGheBySuatChieuId,
-  fetchSeatByRoomID,
-  getVNpayLink,
-} from "@/lib/request";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import useSWR from "swr";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import useSWR from "swr";
+import { SuatChieuType, GheType, VeType } from "../../../../types";
 
 type Step = {
   icon: React.ReactNode | any;

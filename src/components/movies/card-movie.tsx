@@ -1,8 +1,8 @@
 import React from "react";
-import {PhimType} from "../../../types";
+import { PhimType } from "../../../types";
 import Link from "next/link";
 import Image from "next/image";
-import {Card} from "../ui/card";
+import { Card } from "../ui/card";
 
 export default function MovieCard({ movie }: { movie: PhimType }) {
   const IMG_BASE_URL: String | undefined =
@@ -12,7 +12,7 @@ export default function MovieCard({ movie }: { movie: PhimType }) {
       <Link href={`/movie/${movie.id}/schedule`}>
         <Image
           className="cursor-default"
-          src={`${IMG_BASE_URL}` + movie.anh}
+          src={movie.anh}
           alt="poster"
           width={448}
           height={448}
